@@ -158,8 +158,8 @@ export default function App() {
                 <div style={{ display: 'flex', gap: 6 }}><ScoreBox label="得分" value={score} size="sm" /><ScoreBox label="最高" value={best} size="sm" /></div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <Button theme="solid" type="primary" onClick={reset} size="small" block style={{ borderRadius: 10 }}>新游戏</Button>
-                <Button icon={<IconExpand />} onClick={toggleFullscreen} size="small" block style={{ ...GLASS_STYLE, color: 'var(--semi-color-text-0)' }}>{isFullscreen ? '退出' : '全屏'}</Button>
+                <Button theme="solid" type="primary" onClick={reset} size="small" block>新游戏</Button>
+                <Button theme="solid" icon={<IconExpand />} onClick={toggleFullscreen} size="small" block style={{ ...GLASS_STYLE, color: 'var(--semi-color-text-0)' }}>{isFullscreen ? '退出' : '全屏'}</Button>
               </div>
             </div>
           ) : (
@@ -189,10 +189,10 @@ export default function App() {
             {/* 底层网格背景 */}
             <div style={{ position: 'absolute', inset: layout.boardPad, display: 'grid', gridTemplateColumns: `repeat(${SIZE}, 1fr)`, gridTemplateRows: `repeat(${SIZE}, 1fr)`, gap: layout.gap }}>
               {Array.from({ length: SIZE * SIZE }).map((_, i) => (
-                <div key={i} style={{ background: 'rgba(0,0,0,0.04)', borderRadius: 8 }} />
+                <div key={i} style={{ background: 'var(--semi-color-fill-0)', borderRadius: 8 }} />
               ))}
             </div>
-
+            
             {/* 动态方块 */}
             {tiles.map(tile => (
               <AnimatedTile key={tile.id} tile={tile} cellSize={cellSize} gap={layout.gap} boardPad={layout.boardPad} />
@@ -210,7 +210,7 @@ export default function App() {
       <Modal visible={gameOver} title="游戏结束" centered closable={false} maskClosable={false} zIndex={1100} onCancel={reset} footer={<Button theme="solid" type="primary" onClick={reset}>再来一局</Button>}>
         <div style={{ textAlign: 'center', padding: '8px 0 4px' }}>
           <Text type="tertiary">本局得分</Text>
-          <div style={{ fontSize: 48, fontWeight: 800, color: 'var(--semi-color-primary)', margin: '6px 0' }}>{score}</div>
+          <div style={{ fontSize: 48, fontWeight: 800, color: 'var(--semi-color-primary)', margin: '16px 0' }}>{score}</div>
           <Text type="tertiary" size="small">最高分 {best}</Text>
         </div>
       </Modal>
