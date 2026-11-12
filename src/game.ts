@@ -1,8 +1,8 @@
 import { SIZE } from './constants';
-import type { Tile, Direction, SavedGame } from './types'; // ✅ 补全 SavedGame 导入
+import type { Tile, Direction, SavedGame } from './types';
 
-// ✅ 修复 ID 冲突：使用随机字符串，即使刷新页面也不会重复
-const genId = () => Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
+const genId = () =>
+  Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
 
 export const createTile = (row: number, col: number, value: number): Tile => ({
   id: genId(),
@@ -12,13 +12,16 @@ export const createTile = (row: number, col: number, value: number): Tile => ({
   isNew: true,
 });
 
-export const createInitialGame = (): SavedGame => {
-  const tiles = [createTile(0, 0, 2), createTile(0, 1, 2)];
-  return { tiles, score: 0, best: 0 };
-};
+export const createInitialGame = (): SavedGame => ({
+  tiles: [createTile(0, 0, 2), createTile(0, 1, 2)],
+  score: 0,
+  best: 0,
+});
 
 export const addRandomTile = (tiles: Tile[]) => {
-  const occupied = new Set(tiles.filter(t => !t.isRemoved).map(t => `${t.row}-${t.col}`));
+  const occupied = new Set(
+    tiles.filter((t) => !t.isRemoved).map((t) => `${t.row}-${t.col}`),
+  );
   const empties: [number, number][] = [];
   for (let r = 0; r < SIZE; r++) {
     for (let c = 0; c < SIZE; c++) {
@@ -30,11 +33,16 @@ export const addRandomTile = (tiles: Tile[]) => {
   tiles.push(createTile(r, c, Math.random() < 0.9 ? 2 : 4));
 };
 
+const makeGrid = () =>
+  Array.from({ length: SIZE }, () => Array<Tile | null>(SIZE).fill(null));
+
 export const canMove = (tiles: Tile[]) => {
-  const active = tiles.filter(t => !t.isRemoved);
+  const active = tiles.filter((t) => !t.isRemoved);
   if (active.length < SIZE * SIZE) return true;
-  const grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
-  active.forEach(t => { grid[t.row][t.col] = t; });
+  const grid = makeGrid();
+  active.forEach((t) => {
+    grid[t.row][t.col] = t;
+  });
   for (let r = 0; r < SIZE; r++) {
     for (let c = 0; c < SIZE; c++) {
       const t = grid[r][c];
@@ -46,15 +54,20 @@ export const canMove = (tiles: Tile[]) => {
 };
 
 export const computeMove = (oldTiles: Tile[], dir: Direction) => {
-  const activeTiles = oldTiles.filter(t => !t.isRemoved).map(t => ({ ...t, isNew: false, isMerged: false }));
-  const grid: (Tile | null)[][] = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
-  activeTiles.forEach(t => { grid[t.row][t.col] = t; });
+  const activeTiles = oldTiles
+    .filter((t) => !t.isRemoved)
+    .map((t) => ({ ...t, isNew: false, isMerged: false }));
+
+  const grid = makeGrid();
+  activeTiles.forEach((t) => {
+    grid[t.row][t.col] = t;
+  });
 
   let gained = 0;
   let moved = false;
   const toRemove: Tile[] = [];
 
-  const processLine = (lineTiles: (Tile | null)[]) => {
+  const processLine = (lineTiles: (Tile | null)[]): (Tile | null)[] => {
     const items = lineTiles.filter((t): t is Tile => t !== null);
     const result: Tile[] = [];
 
@@ -65,7 +78,6 @@ export const computeMove = (oldTiles: Tile[], dir: Direction) => {
       if (next && current.value === next.value) {
         const mergedValue = current.value * 2;
         gained += mergedValue;
-        
         current.value = mergedValue;
         current.isMerged = true;
         result.push(current);
@@ -74,15 +86,16 @@ export const computeMove = (oldTiles: Tile[], dir: Direction) => {
         next.col = current.col;
         next.isRemoved = true;
         toRemove.push(next);
-        
-        i++; 
+        i++;
         moved = true;
       } else {
         result.push(current);
       }
     }
-    while (result.length < SIZE) result.push(null as any);
-    return result;
+    // ✅ 用非 any 的方式补齐 null
+    const padded: (Tile | null)[] = [...result];
+    while (padded.length < SIZE) padded.push(null);
+    return padded;
   };
 
   const applyProcess = (r: number, c: number, t: Tile | null) => {
@@ -107,7 +120,7 @@ export const computeMove = (oldTiles: Tile[], dir: Direction) => {
     }
   } else {
     for (let c = 0; c < SIZE; c++) {
-      let col = grid.map(row => row[c]);
+      let col = grid.map((row) => row[c]);
       if (dir === 'down') col = col.slice().reverse();
       const processed = processLine(col);
       if (dir === 'down') processed.reverse();

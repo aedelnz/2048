@@ -1,20 +1,49 @@
-html, body, #root { height: 100%; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-font-smoothing: antialiased;
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
-* { box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+}
+* {
+    box-sizing: border-box;
+}
 
 /* 合并时的弹跳放大（cubic-bezier 提供轻微的过冲回弹感） */
 @keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* 新方块生成时的出现 */
 @keyframes appear {
-  0% { transform: scale(0); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.semi-modal.semi-modal-centered {
+    padding: 16px;
+}
+.semi-modal-content {
+    background: color-mix(in srgb, var(--semi-color-bg-0) 60%, transparent);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--semi-color-bg-0) 90%, transparent);
+    box-shadow: var(--semi-shadow-elevated);
 }

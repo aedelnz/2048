@@ -1,16 +1,16 @@
 export const TILE_THEME: Record<number, { bg: string; fg: string }> = {
   0:    { bg: 'transparent',                          fg: 'transparent' },
-  2:    { bg: 'var(--semi-color-fill-1)',             fg: 'var(--semi-color-text-0)' },
-  4:    { bg: 'var(--semi-color-primary-light-default)', fg: 'var(--semi-color-text-0)' },
-  8:    { bg: 'var(--semi-color-primary-light-active)',  fg: 'var(--semi-color-text-0)' },
-  16:   { bg: 'var(--semi-color-primary-hover)',       fg: 'var(--semi-color-white)' },
-  32:   { bg: 'var(--semi-color-primary)',             fg: 'var(--semi-color-white)' },
-  64:   { bg: 'var(--semi-color-success-light-default)', fg: 'var(--semi-color-white)' },
-  128:  { bg: 'var(--semi-color-success-hover)',       fg: 'var(--semi-color-white)' },
-  256:  { bg: 'var(--semi-color-success)',             fg: 'var(--semi-color-white)' },
-  512:  { bg: 'var(--semi-color-warning-hover)',       fg: 'var(--semi-color-white)' },
-  1024: { bg: 'var(--semi-color-warning)',             fg: 'var(--semi-color-white)' },
-  2048: { bg: 'var(--semi-color-danger)',              fg: 'var(--semi-color-white)' },
+  2:    { bg: 'rgba(var(--semi-light-blue-5), 1)',             fg: 'var(--semi-color-white)' },
+  4:    { bg: 'rgba(var(--semi-blue-4), 1)', fg: 'var(--semi-color-white)' },
+  8:    { bg: 'rgba(var(--semi-blue-5), 1)',  fg: 'var(--semi-color-white)' },
+  16:   { bg: 'rgba(var(--semi-cyan-5), 1)',       fg: 'var(--semi-color-white)' },
+  32:   { bg: 'rgba(var(--semi-cyan-6), 1)',             fg: 'var(--semi-color-white)' },
+  64:   { bg: 'rgba(var(--semi-teal-6), 1)', fg: 'var(--semi-color-white)' },
+  128:  { bg: 'rgba(var(--semi-green-6), 1)',       fg: 'var(--semi-color-white)' },
+  256:  { bg: 'rgba(var(--semi-light-green-6), 1)',             fg: 'var(--semi-color-white)' },
+  512:  { bg: 'rgba(var(--semi-orange-6), 1)',       fg: 'var(--semi-color-white)' },
+  1024: { bg: 'rgba(var(--semi-red-5), 1)',             fg: 'var(--semi-color-white)' },
+  2048: { bg: 'var(--semi-ai-general-5)',              fg: 'var(--semi-color-white)' },
 };
 
 export const TILE_DARK = {

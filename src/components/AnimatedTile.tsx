@@ -1,5 +1,6 @@
-import { TILE_DARK, TILE_THEME, tileFontSize } from './tileTheme';
-import type { Tile } from './types';
+import { memo } from 'react';
+import { TILE_DARK, TILE_THEME, tileFontSize } from '../tileTheme';
+import type { Tile } from '../types';
 
 interface Props {
   tile: Tile;
@@ -8,12 +9,18 @@ interface Props {
   boardPad: number;
 }
 
-export default function AnimatedTile({ tile, cellSize, gap, boardPad }: Props) {
+function AnimatedTile({ tile, cellSize, gap, boardPad }: Props) {
   const { row, col, value, isNew, isMerged, isRemoved } = tile;
   const theme = TILE_THEME[value] ?? TILE_DARK;
 
   const x = boardPad + col * (cellSize + gap);
   const y = boardPad + row * (cellSize + gap);
+
+  const animation = isMerged
+    ? 'pop 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275) 120ms both'
+    : isNew
+      ? 'appear 200ms ease-out both'
+      : 'none';
 
   return (
     <div
@@ -35,19 +42,17 @@ export default function AnimatedTile({ tile, cellSize, gap, boardPad }: Props) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: 8,
+          borderRadius: 'var(--semi-border-radius-medium)',
           background: theme.bg,
           color: theme.fg,
           fontWeight: 700,
           fontSize: tileFontSize(value, cellSize),
           lineHeight: 1,
-          // ✅ 使用 Semi 的白色变量来制作内发光边缘
-          boxShadow: 'inset 0 1px 1px color-mix(in srgb, var(--semi-color-bg-0) 80%, transparent)',
-          animation: isMerged 
-            ? 'pop 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275) 120ms both' 
-            : isNew 
-            ? 'appear 200ms ease-out both' 
-            : 'none',
+          boxShadow:
+            'inset 0px -1px 2px color-mix(in srgb, var(--semi-color-bg-0) 80%, transparent)',
+          animation,
+          border: '1px solid var(--semi-color-border)',
+          
         }}
       >
         {value}
@@ -55,3 +60,5 @@ export default function AnimatedTile({ tile, cellSize, gap, boardPad }: Props) {
     </div>
   );
 }
+
+export default memo(AnimatedTile);
